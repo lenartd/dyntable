@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<meta charset="UTF-8">
+<title>Wot m8</title>
+<style>
+
+#data {width:700px, margin:auto;}
+#contain 
+{
+   background-color: #00cc00; 
+   height:700px;
+   width:800px;
+}
+td {padding: 2px 10px 2px 10px;}
+
+#result
+{
+   border: 1px solid black;
+   width:730px;
+}
+.button2
+{
+    margin-top:10px;
+
+}
+</style>
+<script>
+let id=1;
+let persons=[];
+function addData() 
+{
+
+    let fname = document.getElementById("fname").value;
+	let lname = document.getElementById("lname").value;
+	let age = document.getElementById("age").value;
+	let gender = document.querySelector('input[name="gender"]:checked').value;
+	
+	let person=
+	{
+	    fname:fname,
+		lname:lname,
+		age:age,
+		gender:gender
+	};
+	persons.push(person);
+	
+    var table = document.getElementById("autoContent");
+    var row = table.insertRow(-1);
+	row.setAttribute("name", "addedRow");
+	row.setAttribute("id", "row"+id);
+    var cell0 = row.insertCell(0);
+    var cell1 = row.insertCell(1);
+	var cell2 = row.insertCell(2);
+	var cell3 = row.insertCell(3);
+	var cell4 = row.insertCell(4);
+	var cell5 = row.insertCell(5);
+	
+    cell0.innerHTML = id;
+    cell1.innerHTML = fname;
+	cell2.innerHTML = lname;
+	cell3.innerHTML = age;
+	cell4.innerHTML = gender;
+	let addit= "onclick=(deletePerson(" + "\'" + id + "\'" +'))';
+	cell5.innerHTML = "<img src='cre.png' alt='x'" + addit + ">";
+	id++;
+}
+function saveit()
+{
+    console.log("save");
+	if (typeof(Storage) !== "undefined") 
+	{
+	     let text = JSON.stringify(persons);
+         localStorage.setItem("persons", text);
+    } 
+}
+function loadit()
+{	
+}
+
+const deletePerson=(id)=>
+{
+        let index=persons.findIndex(x => {return  x.id===id} );
+        persons.splice(index,1);
+        let per=[...persons];
+        $('#autoContent').empty();
+}
+
+</script>
+</head>
+<body>
+
+<center>
+<h1>Dynamically renderred content</h1>
+<div id = "data">
+<table>
+<tr>
+<td><label>First Name:</label></td>
+<td><label>Last Name:</label></td>
+<td><label>Age:</label></td>
+<td><label>Gender:</label></td>
+<td rowspan=2><button onclick="addData()">Add</button></td>
+</tr>
+
+<tr>
+<td><label><input type="text" id="fname" name="fname"></label></td>
+<td><label><input type="text" id="lname" name="lname"></label></td>
+<td><label><input type="text" id="age" name="age"></label></td>
+<td>
+<input type="radio" name="gender" value="Male">Male</br>
+<input type="radio" name="gender" value="Female">Female
+</td>
+</tr>
+</table>
+<button name ="button2" id="btnsave" onclick="saveit()">Save data</button>
+<button name ="button2" id="btnload" onclick="loadit()">Load data</button>
+</center>
+</div>
+
+<center>
+<div>
+<table id="result">
+<thead>
+<tr>
+<td><label>ID</label></td>
+<td><label>First Name</label></td>
+<td><label>Last Name</label></td>
+<td><label>Age</label></td>
+<td><label>Gender</label></td>
+<td><label>Delete</label></td>
+</tr>
+</thead>
+<tbody id="autoContent">
+ </tbody>
+</table>
+</div>
+</center>
+
+</body>
+</html>
